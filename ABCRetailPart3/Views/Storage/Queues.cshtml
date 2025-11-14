@@ -1,0 +1,132 @@
+﻿@{
+    ViewData["Title"] = "Queue Storage";
+}
+
+<h1>Queue Storage (Azure Queues)</h1>
+
+<div class="mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMessageModal">
+        <i class="fas fa-plus"></i> Add Queue Message
+    </button>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Orders Queue</h3>
+        <div class="card">
+            <div class="card-body">
+                @if (ViewBag.OrderMessages != null && ViewBag.OrderMessages.Count > 0)
+                {
+                    <ul class="list-group">
+                        @foreach (var message in ViewBag.OrderMessages)
+                        {
+                            <li class="list-group-item">@message</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No messages in orders queue</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Inventory Queue</h3>
+        <div class="card">
+            <div class="card-body">
+                @if (ViewBag.InventoryMessages != null && ViewBag.InventoryMessages.Count > 0)
+                {
+                    <ul class="list-group">
+                        @foreach (var message in ViewBag.InventoryMessages)
+                        {
+                            <li class="list-group-item">@message</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No messages in inventory queue</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h3>Customers Queue</h3>
+        <div class="card">
+            <div class="card-body">
+                @if (ViewBag.CustomerMessages != null && ViewBag.CustomerMessages.Count > 0)
+                {
+                    <ul class="list-group">
+                        @foreach (var message in ViewBag.CustomerMessages)
+                        {
+                            <li class="list-group-item">@message</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No messages in customers queue</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Images Queue</h3>
+        <div class="card">
+            <div class="card-body">
+                @if (ViewBag.ImageMessages != null && ViewBag.ImageMessages.Count > 0)
+                {
+                    <ul class="list-group">
+                        @foreach (var message in ViewBag.ImageMessages)
+                        {
+                            <li class="list-group-item">@message</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No messages in images queue</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Message Modal -->
+<div class="modal fade" id="addMessageModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Queue Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="@Url.Action("AddQueueMessage", "Storage")">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Queue Name</label>
+                        <select name="queueName" class="form-control" required>
+                            <option value="orders">Orders</option>
+                            <option value="inventory">Inventory</option>
+                            <option value="customers">Customers</option>
+                            <option value="images">Images</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        <textarea name="message" class="form-control" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

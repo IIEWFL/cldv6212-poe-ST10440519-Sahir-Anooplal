@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-4">Welcome to ABC Retail</h1>
+    <p class="lead">Your one-stop shop for all your needs</p>
+
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-boxes fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Browse Products</h5>
+                    <p class="card-text">Explore our wide range of products</p>
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-primary">View Products</a>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-shopping-cart fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">Your Cart</h5>
+                        <p class="card-text">Manage your shopping cart</p>
+                        <a href="@Url.Action("Index", "Cart")" class="btn btn-success">View Cart</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-clipboard-list fa-3x text-info mb-3"></i>
+                        <h5 class="card-title">Your Orders</h5>
+                        <p class="card-text">Track your orders</p>
+                        <a href="@Url.Action("Index", "Orders")" class="btn btn-info">View Orders</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-user fa-3x text-warning mb-3"></i>
+                        <h5 class="card-title">Login</h5>
+                        <p class="card-text">Sign in to your account</p>
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-warning">Login</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-user-plus fa-3x text-secondary mb-3"></i>
+                        <h5 class="card-title">Register</h5>
+                        <p class="card-text">Create a new account</p>
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-secondary">Register</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Context.Session.GetString("UserRole") == "Admin")
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-cog fa-3x text-dark mb-3"></i>
+                        <h5 class="card-title">Admin Panel</h5>
+                        <p class="card-text">Manage the store</p>
+                        <a href="@Url.Action("Index", "Admin")" class="btn btn-dark">Admin Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "File Storage";
+}
+
+<h1>File Storage (Azure Files)</h1>
+
+<div class="mb-3">
+    <form method="post" action="@Url.Action("UploadContract", "Storage")" enctype="multipart/form-data" class="row">
+        <div class="col-md-8">
+            <input type="file" name="contractFile" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-upload"></i> Upload Contract
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contract in Model)
+            {
+                <tr>
+                    <td>@contract</td>
+                    <td>
+                        <span class="badge bg-success">Uploaded</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> No contracts found in file storage.
+    </div>
+}

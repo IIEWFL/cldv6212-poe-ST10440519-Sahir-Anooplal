@@ -1,0 +1,84 @@
+﻿@model List<ABCRetailPart3.Models.CartItem>
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h1>Shopping Cart</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="fas fa-shopping-cart"></i> Your cart is empty.
+        <a href="@Url.Action("Index", "Products")" class="alert-link">Continue shopping</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>R @item.Price</td>
+                        <td>@item.Quantity</td>
+                        <td>R @(item.Price* item.Quantity)</td>
+                        <td>
+                            <form method="post" action="@Url.Action("RemoveFromCart", "Cart")">
+                                <input type="hidden" name="cartItemId" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Total: R @Model.Sum(item => item.Price * item.Quantity)</h4>
+        </div>
+        <div class="col-md-6 text-end">
+            <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                <i class="fas fa-credit-card"></i> Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="post" action="@Url.Action("Checkout", "Cart")">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Shipping Address</label>
+                            <textarea name="shippingAddress" class="form-control" required rows="3" placeholder="Enter your complete shipping address"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

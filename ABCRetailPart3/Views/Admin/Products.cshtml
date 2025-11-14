@@ -1,0 +1,49 @@
+﻿@model List<ABCRetailPart3.Models.Product>
+@{
+    ViewData["Title"] = "Manage Products";
+}
+
+<h1>Manage Products</h1>
+
+<div class="mb-3">
+    <a href="@Url.Action("Create", "Products")" class="btn btn-success">
+        <i class="fas fa-plus"></i> Add New Product
+    </a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>R @product.Price</td>
+                    <td>@product.Category</td>
+                    <td>@product.StockQuantity</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                        {
+                            <img src="@product.ImageUrl" style="height: 50px; width: 50px; object-fit: cover;" alt="@product.Name" />
+                        }
+                        else
+                        {
+                            <i class="fas fa-image text-muted"></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

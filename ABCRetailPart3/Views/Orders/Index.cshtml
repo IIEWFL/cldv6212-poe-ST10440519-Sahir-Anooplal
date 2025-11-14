@@ -1,0 +1,49 @@
+﻿@model List<ABCRetailPart3.Models.Order>
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h1>My Orders</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> You haven't placed any orders yet.
+        <a href="@Url.Action("Index", "Products")" class="alert-link">Start shopping</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Shipping Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                        <td>R @order.TotalAmount</td>
+                        <td>
+                            <span class="badge
+                                        @(order.Status == "PENDING" ? "bg-warning" :
+                                                                    order.Status == "PROCESSED" ? "bg-success" :
+                                                                    order.Status == "SHIPPED" ? "bg-info" : "bg-secondary")">
+                        @order.Status
+                    </span>
+                </td>
+                <td>@order.ShippingAddress</td>
+            </tr>
+                        }
+            </tbody>
+        </table>
+    </div>
+}

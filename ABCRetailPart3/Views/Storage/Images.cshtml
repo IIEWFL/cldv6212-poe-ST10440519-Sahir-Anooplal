@@ -1,0 +1,42 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Image Storage";
+}
+
+<h1>Image Storage (Azure Blob)</h1>
+
+<div class="mb-3">
+    <form method="post" action="@Url.Action("UploadImage", "Storage")" enctype="multipart/form-data" class="row">
+        <div class="col-md-8">
+            <input type="file" name="imageFile" class="form-control" accept="image/*" required />
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-upload"></i> Upload Image
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    @foreach (var imageUrl in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="@imageUrl" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Uploaded image">
+                <div class="card-body">
+                    <p class="card-text">
+                        <small class="text-muted">@System.IO.Path.GetFileName(new Uri(imageUrl).LocalPath)</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> No images found in blob storage.
+    </div>
+}

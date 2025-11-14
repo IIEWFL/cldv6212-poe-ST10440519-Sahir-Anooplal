@@ -1,0 +1,62 @@
+﻿@model List<ABCRetailPart3.Models.Order>
+@{
+    ViewData["Title"] = "Manage Orders";
+}
+
+<h1>Manage Orders</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> No orders found.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer Email</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Shipping Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.CustomerEmail</td>
+                        <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                        <td>R @order.TotalAmount</td>
+                        <td>
+                            <span class="badge
+                                        @(order.Status == "PENDING" ? "bg-warning" :
+                                                                    order.Status == "PROCESSED" ? "bg-success" :
+                                                                    order.Status == "SHIPPED" ? "bg-info" : "bg-secondary")">
+                        @order.Status
+                    </span>
+                </td>
+                <td>@order.ShippingAddress</td>
+                <td>
+                    <form method="post" action="@Url.Action("UpdateOrderStatus", "Admin")" class="d-inline">
+                        <input type="hidden" name="orderId" value="@order.Id" />
+                        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                            <option value="PENDING" selected="@(order.Status == "PENDING")">PENDING</option>
+                            <option value="PROCESSED" selected="@(order.Status == "PROCESSED")">PROCESSED</option>
+                            <option value="SHIPPED" selected="@(order.Status == "SHIPPED")">SHIPPED</option>
+                            <option value="DELIVERED" selected="@(order.Status == "DELIVERED")">DELIVERED</option>
+                        </select>
+                    </form>
+                </td>
+            </tr>
+                        }
+            </tbody>
+        </table>
+    </div>
+}

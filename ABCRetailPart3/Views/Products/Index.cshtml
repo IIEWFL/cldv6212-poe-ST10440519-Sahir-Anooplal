@@ -1,0 +1,79 @@
+﻿@model List<ABCRetailPart3.Models.Product>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Our Products</h1>
+    <form method="post" action="@Url.Action("Search", "Products")" class="d-flex">
+        <input type="text" name="searchTerm" class="form-control me-2" placeholder="Search products..." value="@ViewBag.SearchTerm">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+
+@if (Context.Session.GetString("UserRole") == "Admin")
+{
+    <div class="mb-3">
+        <a href="@Url.Action("Create", "Products")" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New Product
+        </a>
+    </div>
+}
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                {
+                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;">
+                }
+                else
+                {
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                }
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text flex-grow-1">@product.Description</p>
+                    <div class="mt-auto">
+                        <p class="card-text"><strong>R @product.Price</strong></p>
+                        <p class="card-text"><small class="text-muted">Category: @product.Category</small></p>
+                        @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+                        {
+                            <form method="post" action="@Url.Action("AddToCart", "Cart")">
+                                <input type="hidden" name="productId" value="@product.RowKey" />
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Account")" class="btn btn-outline-primary w-100">
+                                Login to Purchase
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+        <h3>No products found</h3>
+        <p class="text-muted">@(ViewBag.SearchTerm != null ? "Try a different search term." : "Check back later for new products.")</p>
+        @if (ViewBag.SearchTerm != null)
+        {
+            <a href="@Url.Action("Index")" class="btn btn-primary">View All Products</a>
+        }
+    </div>
+}
